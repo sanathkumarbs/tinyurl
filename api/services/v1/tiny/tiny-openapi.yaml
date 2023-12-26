@@ -1,0 +1,49 @@
+openapi: "3.1.0"
+info:
+  version: 1.0.0
+  title: Tiny Service
+servers:
+  - url: http://tinyurl.sanathk.com
+    description: This is the production server for TinyURL Service
+paths:
+  /generate:
+    tags:
+      - Tiny
+    post:
+      summary: Creates a TinyURL for a given url
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  required: true
+                expiry:
+                  type: string
+                  format: date
+                  required: false
+      responses:
+        # Research if we want to return 201 instead of 200?
+        200:
+          description: A TinyURL link to the original url
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  original:
+                    type: string
+                    required: true
+                    example: "https://www.sanathk.com/some/random/page?with=queryparams"
+                  tinyurl:
+                    type: string
+                    required: true
+                    example: "https://tinyurl.sanath.com/randHash"
+                  expiry:
+                    type: string
+                    format: date
+                    required: true
+                    example: "2025-01-01"
