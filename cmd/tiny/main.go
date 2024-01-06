@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"sanathk.com/tinyurl/internal/tiny"
+)
 
 func main() {
-	fmt.Println("hello")
+	tiny.Hello()
 }
