@@ -1,9 +1,9 @@
 ROOTDIR				:= $(shell git rev-parse --show-toplevel)
 
 GO_LINT_VERSION		:= 1.55.1
-GO_LINT_BIN 		?= $(ROOTDIR)/bin/golangci-lint
+GO_LINT_BIN			?= $(ROOTDIR)/bin/golangci-lint
 
-GO_IMPORTS_VERSION  := 0.16.1
+GO_IMPORTS_VERSION	:= 0.16.1
 
 .install-oapi-codegen: 
 ifeq (, $(shell which oapi-codegen))
