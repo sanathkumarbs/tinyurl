@@ -3,7 +3,7 @@ ifeq (, $(shell which oapi-codegen))
 	go install -v github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@v2.0.0
 endif
 
-gen:
+gen: generate
 
 generate: .install-oapi-codegen
 	mkdir -p ./pkg/api/services/v1/tiny/
