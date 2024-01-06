@@ -1,49 +1,70 @@
-openapi: "3.1.0"
+openapi: "3.0.0"
+
 info:
   version: 1.0.0
   title: Tiny Service
+
 servers:
   - url: http://tinyurl.sanathk.com
     description: This is the production server for TinyURL Service
+
 paths:
   /generate:
-    tags:
-      - Tiny
     post:
       summary: Creates a TinyURL for a given url
+      tags:
+        - Tiny
+      operationId: createTinyURL
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                url:
-                  type: string
-                  required: true
-                expiry:
-                  type: string
-                  format: date
-                  required: false
+        $ref: '#/components/requestBodies/TinyURLBody'
       responses:
         # Research if we want to return 201 instead of 200?
         200:
-          description: A TinyURL link to the original url
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  original:
-                    type: string
-                    required: true
-                    example: "https://www.sanathk.com/some/random/page?with=queryparams"
-                  tinyurl:
-                    type: string
-                    required: true
-                    example: "https://tinyurl.sanath.com/randHash"
-                  expiry:
-                    type: string
-                    format: date
-                    required: true
-                    example: "2025-01-01"
+          $ref: '#/components/responses/TinyURLResponse'
+
+components:
+  requestBodies:
+    TinyURLBody:
+      description: The original url for creating TinyURL
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TinyURLRequest'
+  responses:
+    TinyURLResponse:
+      description: A TinyURL link to the original url
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TinyURLResponse'
+  schemas:
+    TinyURLRequest:
+      type: object
+      required:
+        - original
+      properties:
+        original:
+          type: string
+          example: "https://www.sanathk.com/some/random/page?with=queryparams"
+        expiry:
+          type: string
+          format: date
+          example: "2025-01-01"
+    TinyURLResponse:
+      type: object
+      required:
+        - original
+        - tinyurl
+        - expiry
+      properties:
+        original:
+          type: string
+          example: "https://www.sanathk.com/some/random/page?with=queryparams"
+        tinyurl:
+          type: string
+          example: "https://tinyurl.sanath.com/randHash"
+        expiry:
+          type: string
+          format: date
+          example: "2025-01-01"
