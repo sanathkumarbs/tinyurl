@@ -21,3 +21,6 @@ bin/
 
 # Go workspace file
 go.work
+
+# Mac
+.DS_Store

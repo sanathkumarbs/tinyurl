@@ -1,6 +1,6 @@
 module sanathk.com/tinyurl
 
-go 1.21.5
+go 1.21.3
 
 require (
 	github.com/getkin/kin-openapi v0.122.0
