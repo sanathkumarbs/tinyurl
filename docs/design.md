@@ -86,28 +86,53 @@ TBD: Use OpenAPI Schema definition if possible?
 * Methods: POST
 * Encoding: JSON
 
-Request Data:
+**Request Body**
 
-	request: 
-		object: generateURLRequest
+    TinyURLRequest:
+      type: object
+      required:
+        - original
+      properties:
+        original:
+          type: string
+          example: "https://www.sanathk.com/some/random/page?with=queryparams"
+        expiry:
+          type: string
+          format: date
+          example: "2025-01-01"
 
-	generateURLRequest:
-		required:
-			url: string
-		optional:
-			expiry: date 
+**Response**
 
-	response: 
-		object: generateURLResponse
-
-		generateURLResponse:
-			required:
-				url: string
-				short: string
-				expiry: date 
+    TinyURLResponse:
+      type: object
+      required:
+        - original
+        - tinyurl
+        - expiry
+      properties:
+        original:
+          type: string
+          example: "https://www.sanathk.com/some/random/page?with=queryparams"
+        tinyurl:
+          type: string
+          example: "https://tinyurl.sanath.com/randHash"
+        expiry:
+          type: string
+          format: date
+          example: "2025-01-01"
 
 ### Persistence
 The TinyURL data will be persisted in the `postgres` datastore for long-term storage. A table schema design will be added here for reference. 
+
+**Database Schema**
+```mermaid
+erDiagram
+    tinyurls {
+        text original
+        text tinyurl
+        date expiry
+    }
+```
 
 We will use various caching strategies to provide low latency environment, and, details around the same will be provided here as well. 
 
