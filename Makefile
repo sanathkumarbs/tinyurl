@@ -11,11 +11,6 @@ ifeq (, $(shell which oapi-codegen))
 	go install -v github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@v2.0.0
 endif
 
-_install-air: 
-ifeq (, $(shell which air))
-	go install -v github.com/cosmtrek/air@v1.49.0
-endif
-
 _install-golangci-lint: 
 ifeq (, $(shell $(GO_LINT_BIN) --version))
 	@mkdir -p $(shell dirname $(GO_LINT_BIN))
@@ -31,17 +26,26 @@ all: gen fmt lint build
 
 ru: run-up
 rd: run-down
+rdv: run-down-volumes
 
 run-up: 
 	$(info Running run-up...)
-	@$(MAKE) --quiet _install-air
+	@$(MAKE) build
 	docker compose -f devenv/docker-compose.yaml up -d
 
 run-down: 
 	$(info Running run-down...)
 	docker compose -f devenv/docker-compose.yaml down
 	rm -rf tmp/*
-	
+
+run-down-volumes: 
+	$(info Running run-down...)
+	docker compose -f devenv/docker-compose.yaml down --volumes
+	rm -rf tmp/*
+
+psql:
+	$(info Running exec into postgres...)
+	docker exec -it devenv-postgres-1 psql -d tiny -U postgres
 
 clean:
 	$(info Running clean...)
