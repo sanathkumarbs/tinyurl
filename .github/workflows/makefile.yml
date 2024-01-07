@@ -30,4 +30,4 @@ jobs:
       run: make build-go
 
     - name: Make Build Docker Images
-      run: make build-docker
+      run: make build-image
