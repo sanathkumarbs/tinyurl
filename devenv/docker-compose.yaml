@@ -1,0 +1,10 @@
+services:
+  tiny:
+    working_dir: /app
+    image: devenv-tiny
+    build:
+      context: ./..
+      dockerfile: ./packaging/services/tiny/Dockerfile
+    volumes:
+      - ../:/app
+
