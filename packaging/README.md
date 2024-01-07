@@ -1,1 +1,1 @@
-This is a placeholder, more to follow
+The Dockerfiles for services follows the best practices for Docker containers as defined by [Sysdig](https://sysdig.com/blog/dockerfile-best-practices/)
