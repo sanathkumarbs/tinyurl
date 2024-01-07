@@ -7,4 +7,14 @@ services:
       dockerfile: ./packaging/services/tiny/Dockerfile
     volumes:
       - ../:/app
-
+  postgres:
+    image: postgres:16.1
+    volumes:
+      - postgres-persisted:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: tiny
+    ports:
+      - "5432:5432"
+volumes:
+  postgres-persisted:
