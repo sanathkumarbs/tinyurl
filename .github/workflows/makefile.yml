@@ -13,18 +13,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-go@v4
 
     - name: Run OAPI-Generate
-      run: export PATH=${PATH}:/usr/local/go/bin && make gen
+      run: make gen
       
     - name: Run Lint
-      run: export PATH=${PATH}:/usr/local/go/bin && make lint
+      run: make lint
 
     - name: Run Format
-      run: export PATH=${PATH}:/usr/local/go/bin && make fmt
+      run: make fmt
 
     - name: Make Build Go
-      run: export PATH=${PATH}:/usr/local/go/bin && make build-go
+      run: make build-go
 
     - name: Make Build Docker Images
-      run: export PATH=${PATH}:/usr/local/go/bin && make build-docker
+      run: make build-docker
