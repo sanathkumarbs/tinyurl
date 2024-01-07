@@ -1,0 +1,1 @@
+The Dockerfiles follows the best practices for Docker containers as defined by [Sysdig](https://sysdig.com/blog/dockerfile-best-practices/)

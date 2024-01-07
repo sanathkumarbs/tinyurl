@@ -1,4 +1,5 @@
 ROOTDIR				:= $(shell git rev-parse --show-toplevel)
+COMMIT_SHA 			:= $(git rev-parse --short HEAD)
 GO_LINT_VERSION		:= 1.55.1
 GO_LINT_BIN			:= $(ROOTDIR)/bin/golangci-lint
 GO_IMPORTS_VERSION	:= 0.16.1
@@ -25,9 +26,13 @@ clean:
 	$(info Running clean...)
 	@rm -rf bin/*
 
-build:
-	$(info Running build...)
-	@CGO_ENABLED=0 go build -o bin/tiny cmd/tiny/main.go
+build: build-go build-image
+
+build-go: $(info Running build-go...)
+	CGO_ENABLED=0 GOOS=linux go build -o bin/tiny cmd/tiny/main.go
+
+build-image: $(info Running build-image...)
+	@$(ROOTDIR)/scripts/build-image.sh
 
 fmt: .install-goimports
 	$(info Running goimports...)
