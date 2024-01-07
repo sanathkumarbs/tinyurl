@@ -1,0 +1,33 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: configure
+      run: ./configure
+
+    - name: Run OAPI-Generate
+      run: make gen
+      
+    - name: Run Lint
+      run: make lint
+
+    - name: Run Format
+      run: make fmt
+
+    - name: Make Build Go
+      run: make build-go
+
+    - name: Make Build Docker Images
+      run: make build-docker
