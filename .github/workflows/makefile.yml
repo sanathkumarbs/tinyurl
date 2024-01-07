@@ -15,16 +15,26 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Run OAPI-Generate
-      run: make gen
+    - run: |
+        export PATH=${PATH}:go env GOPATH/bin
+        make gen
       
     - name: Run Lint
-      run: make lint
+    - run: |
+        export PATH=${PATH}:go env GOPATH/bin
+        make lint
 
     - name: Run Format
-      run: make fmt
+    - run: |
+        export PATH=${PATH}:go env GOPATH/bin
+        make fmt
 
     - name: Make Build Go
-      run: make build-go
+    - run: |
+        export PATH=${PATH}:go env GOPATH/bin
+        make build-go
 
     - name: Make Build Docker Images
-      run: make build-docker
+    - run: |
+        export PATH=${PATH}:go env GOPATH/bin
+        make build-docker
