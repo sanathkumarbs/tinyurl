@@ -22,6 +22,12 @@ ifeq (, $(shell which goimports))
 	go install -v golang.org/x/tools/cmd/goimports@v$(GO_IMPORTS_VERSION)
 endif
 
+_install-squawk-cli: 
+ifeq (, $(shell which squawk))
+	npm install -g squawk-cli@0.26.0
+endif
+
+
 all: gen fmt lint build
 
 ru: run-up
@@ -42,6 +48,11 @@ run-down-volumes:
 	$(info Running run-down...)
 	docker compose -f devenv/docker-compose.yaml down --volumes
 	rm -rf tmp/*
+
+docker-prune:
+	$(info Running docker-prune...)
+	docker system prune -a --force
+	docker builder prune -a --force
 
 psql:
 	$(info Running exec into postgres...)
@@ -70,11 +81,22 @@ fmt:
 
 lint: 
 	$(info Running lint...)
+	@$(MAKE) lint-go
+	@$(MAKE) lint-sql
+
+lint-go:
+	$(info Running lint-go...)
 	@$(MAKE) --quiet _install-golangci-lint	
 	time $(GO_LINT_BIN) run ./...
 
+lint-sql:
+	$(info Running lint-sql...)
+	@$(MAKE) --quiet _install-squawk-cli
+	time squawk internal/tiny/db/migrations/*
+
 gen:
 	@$(MAKE) generate
+	squawk internal/tiny/db/migrations/*
 
 generate:
 	$(info Running generate...)

@@ -123,14 +123,18 @@ TBD: Use OpenAPI Schema definition if possible?
 
 ### Persistence
 The TinyURL data will be persisted in the `postgres` datastore for long-term storage. A table schema design will be added here for reference. 
+The go application will interact with the database using `pgx` and `sqlc`, the reasons behind choosing this combination is eloquently written [here](https://brandur.org/sqlc) and [here](https://jbrandhorst.com/post/postgres/).
 
 **Database Schema**
+
+The datastore will keep a mapping of original URLs to their hashed URLs with their expirations.
+
 ```mermaid
 erDiagram
     tinyurls {
-        text original
-        text tinyurl
-        date expiry
+        original varchar
+        hash varchar(PK)
+        expiry date
     }
 ```
 
