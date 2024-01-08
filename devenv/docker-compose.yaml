@@ -1,17 +1,25 @@
 services:
   tiny:
     working_dir: /app
-    image: devenv-tiny
-    build:
-      context: ./..
-      dockerfile: ./packaging/services/tiny/Dockerfile
+    image: tiny
     volumes:
       - ../:/app
+    depends_on: 
+      postgres:
+        condition: service_healthy
   postgres:
     image: postgres:16.1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "tiny"]
+      interval: 5s
+      # timeout for each health check request, should be lower than interval
+      timeout: 2s
+      retries: 5
+      start_period: 10s
     volumes:
       - postgres-persisted:/var/lib/postgresql/data
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: tiny
     ports:
