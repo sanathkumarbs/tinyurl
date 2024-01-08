@@ -96,7 +96,6 @@ lint-sql:
 
 gen:
 	@$(MAKE) generate
-	squawk internal/tiny/db/migrations/*
 
 generate:
 	$(info Running generate...)
