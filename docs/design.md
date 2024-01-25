@@ -86,28 +86,57 @@ TBD: Use OpenAPI Schema definition if possible?
 * Methods: POST
 * Encoding: JSON
 
-Request Data:
+**Request Body**
 
-	request: 
-		object: generateURLRequest
+    TinyURLRequest:
+      type: object
+      required:
+        - original
+      properties:
+        original:
+          type: string
+          example: "https://www.sanathk.com/some/random/page?with=queryparams"
+        expiry:
+          type: string
+          format: date
+          example: "2025-01-01"
 
-	generateURLRequest:
-		required:
-			url: string
-		optional:
-			expiry: date 
+**Response**
 
-	response: 
-		object: generateURLResponse
-
-		generateURLResponse:
-			required:
-				url: string
-				short: string
-				expiry: date 
+    TinyURLResponse:
+      type: object
+      required:
+        - original
+        - tinyurl
+        - expiry
+      properties:
+        original:
+          type: string
+          example: "https://www.sanathk.com/some/random/page?with=queryparams"
+        tinyurl:
+          type: string
+          example: "https://tinyurl.sanath.com/randHash"
+        expiry:
+          type: string
+          format: date
+          example: "2025-01-01"
 
 ### Persistence
 The TinyURL data will be persisted in the `postgres` datastore for long-term storage. A table schema design will be added here for reference. 
+The go application will interact with the database using `pgx` and `sqlc`, the reasons behind choosing this combination is eloquently written [here](https://brandur.org/sqlc) and [here](https://jbrandhorst.com/post/postgres/).
+
+**Database Schema**
+
+The datastore will keep a mapping of original URLs to their hashed URLs with their expirations.
+
+```mermaid
+erDiagram
+    tinyurls {
+        original varchar
+        hash varchar(PK)
+        expiry date
+    }
+```
 
 We will use various caching strategies to provide low latency environment, and, details around the same will be provided here as well. 
 
