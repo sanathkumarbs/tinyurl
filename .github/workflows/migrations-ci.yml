@@ -1,9 +1,10 @@
 name: Migrations CI Jobs 
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
-    types:
-      - opened
+    branches: [ "main" ]
 
 jobs:
   migrations:
