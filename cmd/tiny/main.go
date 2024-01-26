@@ -3,16 +3,26 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"log/slog"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/spf13/cobra"
 	"sanathk.com/tinyurl/internal/tiny"
 	"sanathk.com/tinyurl/internal/tiny/db"
+	srvStub "sanathk.com/tinyurl/pkg/api/services/v1/tiny"
+	"sanathk.com/tinyurl/pkg/apiserver"
 	"sanathk.com/tinyurl/pkg/postgres"
+)
+
+const (
+	// TODO: this should be definied and configured via env var/flags
+	servicePort    = "8080"
+	defaultAPIPath = "/api/v1"
 )
 
 func main() {
@@ -33,6 +43,7 @@ func cmd() error {
 }
 
 func run() error {
+	slog.Info("running TinyURL service")
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 	defer cancel()
 
@@ -58,14 +69,20 @@ func run() error {
 		return err
 	}
 
-	ticker := time.NewTicker(10 * time.Second)
-	for {
-		select {
-		case <-ticker.C:
-			svc.Hello()
-		case <-time.After(5 * time.Minute):
-			ticker.Stop()
-			return nil
-		}
+	api, err := tiny.NewAPIHandler(ctx, svc)
+	if err != nil {
+		return err
 	}
+
+	srv, err := apiserver.NewEchoServer()
+	if err != nil {
+		return err
+	}
+	srv.Group(defaultAPIPath)
+	srvStub.RegisterHandlersWithBaseURL(srv, api, defaultAPIPath)
+
+	if err := srv.Start(fmt.Sprintf(":%s", servicePort)); err != http.ErrServerClosed {
+		log.Fatal(err)
+	}
+	return nil
 }

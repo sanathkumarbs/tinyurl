@@ -1,0 +1,45 @@
+name: Base CI Jobs 
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-fmt:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-go@v4
+      with:
+        go-version: '^1.21.3' # The Go version to download (if necessary) and use.
+      
+    - name: Run Lint Go
+      run: make lint-go
+
+    - name: Run Format
+      run: make fmt
+
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-go@v4
+      with:
+        go-version: '^1.21.3' # The Go version to download (if necessary) and use.
+
+    - name: Run OAPI-Generate
+      run: make gen
+        
+    - name: Make Build Go
+      run: make build-go
+
+    - name: Make Build Docker Images
+      run: make build-image

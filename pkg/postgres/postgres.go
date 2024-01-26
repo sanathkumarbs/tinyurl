@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"net/url"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -35,6 +36,7 @@ func NewPostgres(ctx context.Context, connString *url.URL) (Postgres, error) {
 }
 
 func (pg Postgres) connect(ctx context.Context) (*pgx.Conn, error) {
+	slog.Info("connecting to postgres")
 	return pgx.Connect(ctx, pg.connString.String())
 }
 
@@ -43,6 +45,7 @@ func (pg Postgres) Conn() *pgx.Conn {
 }
 
 func (pg Postgres) Migrate(files fs.FS, path string) error {
+	slog.Info("migrating database schema to postgres")
 	c, err := pgx.ParseConfig(pg.connString.String())
 	if err != nil {
 		return fmt.Errorf("parsing postgres connString: %w", err)
@@ -76,5 +79,6 @@ func (pg Postgres) Migrate(files fs.FS, path string) error {
 		}
 		return fmt.Errorf("migrating up: %w", err)
 	}
+	slog.Info("successfully migrated database schema in postgres")
 	return nil
 }
