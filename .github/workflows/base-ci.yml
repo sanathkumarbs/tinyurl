@@ -1,4 +1,4 @@
-name: Makefile CI
+name: Base CI Jobs 
 
 on:
   push:
@@ -8,9 +8,8 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
       with:
@@ -24,16 +23,6 @@ jobs:
       
     - name: Run Lint Go
       run: make lint-go
-
-    - name: Find modified migrations
-      run: |
-          modified_migrations=$(git diff --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF 'migrations/*.sql')
-          echo "$modified_migrations"
-          echo "::set-output name=file_names::$modified_migrations"
-      id: modified-migrations
-    - uses: sbdchd/squawk-action@v1
-      with:
-        pattern: ${{ steps.modified-migrations.outputs.file_names }}
 
     - name: Run Format
       run: make fmt
