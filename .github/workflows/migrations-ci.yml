@@ -8,7 +8,7 @@ on:
       - '**.sql'
 
 jobs:
-  build:
+  migrations:
     runs-on: ubuntu-latest
               
     steps:
