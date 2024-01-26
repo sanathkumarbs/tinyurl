@@ -75,7 +75,7 @@ func (a *APIHandler) CreateTinyURL(ec echo.Context) error {
 
 	return ec.JSON(
 		http.StatusOK, srvType.TinyURLResponse{
-			Expiry:   openapi_types.Date{resp.Expiry},
+			Expiry:   openapi_types.Date{Time: resp.Expiry},
 			Original: resp.Original,
 			Tinyurl:  resp.Tinyurl,
 		},
