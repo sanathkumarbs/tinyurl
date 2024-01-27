@@ -59,7 +59,8 @@ func (a *APIHandler) CreateTinyURL(ec echo.Context) error {
 		Expiry:   body.Expiry.Time,
 		Original: body.Original,
 	}
-	resp, err = a.svc.CreateTinyURL(ec, req)
+
+	resp, err = a.svc.CreateTinyURL(ec.Request().Context(), req)
 	if err != nil {
 		slog.Error("could not complete creating TinyURL", slog.Any("error", err.Error()))
 		ae := APIError{

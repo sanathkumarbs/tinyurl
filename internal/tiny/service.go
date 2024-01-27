@@ -5,8 +5,6 @@ import (
 	"io/fs"
 	"log/slog"
 	"time"
-
-	"github.com/labstack/echo/v4"
 )
 
 type DatabaseInterface interface {
@@ -35,7 +33,7 @@ func NewService(ctx context.Context, db DatabaseInterface) (*Service, error) {
 	}, nil
 }
 
-func (s *Service) CreateTinyURL(ec echo.Context, req TinyURLRequest) (TinyURLResponse, error) {
+func (s *Service) CreateTinyURL(ctx context.Context, req TinyURLRequest) (TinyURLResponse, error) {
 	slog.Info("processing a TinyURL request")
 	return TinyURLResponse{
 		Expiry:   req.Expiry,

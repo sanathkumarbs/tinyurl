@@ -15,6 +15,11 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
+type PostgresInterface interface {
+	Conn() *pgx.Conn
+	Migrate(files fs.FS, path string) error
+}
+
 type Postgres struct {
 	connString *url.URL
 	conn       *pgx.Conn
