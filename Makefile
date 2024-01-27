@@ -62,6 +62,14 @@ clean:
 	$(info Running clean...)
 	@rm -rf bin/*
 
+test: 
+	$(info Running tests...)
+	@$(MAKE) unit-test
+	
+unit-test:
+	$(info Running unit-tests...)
+	go test -v -race -cover ./...
+
 build:
 	@$(MAKE) build-go
 	@$(MAKE) build-image
