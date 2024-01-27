@@ -6,6 +6,7 @@ on:
 
 jobs:
   migrations:
+    name: Migrations
     runs-on: ubuntu-latest
               
     steps:
