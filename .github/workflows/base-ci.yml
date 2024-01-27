@@ -45,3 +45,18 @@ jobs:
 
     - name: Make Build Docker Images
       run: make build-image
+
+  test:
+      name: Test
+      runs-on: ubuntu-latest
+      
+      steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '^1.21.3' # The Go version to download (if necessary) and use.
+
+      - name: Unit Tests
+        run: make unit-test
