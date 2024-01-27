@@ -8,6 +8,7 @@ on:
 
 jobs:
   lint-fmt:
+    name: "Lint and Format"
     runs-on: ubuntu-latest
     
     steps:
@@ -25,6 +26,7 @@ jobs:
       run: make fmt
 
   build:
+    name: "Build"
     runs-on: ubuntu-latest
     
     steps:
