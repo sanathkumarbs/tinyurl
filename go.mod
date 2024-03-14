@@ -5,7 +5,7 @@ go 1.21.3
 require (
 	github.com/getkin/kin-openapi v0.122.0
 	github.com/golang-migrate/migrate/v4 v4.17.0
-	github.com/jackc/pgx/v5 v5.5.1
+	github.com/jackc/pgx/v5 v5.5.4
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.8.1
 	github.com/oapi-codegen/runtime v1.1.1
